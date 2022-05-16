@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : db
--- Généré le : lun. 16 mai 2022 à 14:21
+-- Généré le : lun. 16 mai 2022 à 15:02
 -- Version du serveur : 10.7.3-MariaDB-1:10.7.3+maria~focal
 -- Version de PHP : 7.4.27
 
@@ -48,6 +48,14 @@ CREATE TABLE `User` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Déchargement des données de la table `User`
+--
+
+INSERT INTO `User` (`id`, `username`, `password`) VALUES
+(4, 'FrancisHuster', '$2y$10$72e5jYNd0r.8yT4EqeH6SeNeZ1jECje.CxcJUA1Mdd2YZcEybRKLa'),
+(5, 'JohnBob', '$2y$10$kFvGWH1XUHLiALlErZiiU.cRWzYLkYl3RTvQIkDpla0fe41ooTHPG');
+
+--
 -- Index pour les tables déchargées
 --
 
@@ -78,7 +86,7 @@ ALTER TABLE `Movie`
 -- AUTO_INCREMENT pour la table `User`
 --
 ALTER TABLE `User`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
