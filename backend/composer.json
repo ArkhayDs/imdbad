@@ -1,0 +1,16 @@
+{
+    "name": "kavalier.e.47/backend",
+    "autoload": {
+        "psr-4": {
+            "KavalierE47\\Backend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ArkhayDs"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^6.2"
+    }
+}

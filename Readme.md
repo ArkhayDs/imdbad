@@ -4,8 +4,14 @@ Backend PHP Docker, donc pour faire tourner tout ça :
 ````shell
 docker-compose up -d &&
 cd ./frontend &&
-npm &&
 npm start
+````
+
+Puis penser à effectuer :
+````shell
+npm install #dans /frontend/
+
+composer install #dans /backend/
 ````
 
 Vous pouvez créer vos propres identifiants, mais de base :
