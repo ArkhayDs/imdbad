@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useEffect, useState} from "react";
+import {useEffect, useReducer, useState} from "react";
 import useLogin from "./Hook/useLogin";
 import {BlogInterface, LoginResponseInterface} from "./Interface/ResponsesInterfaces";
 import {LocalUserInterface} from "./Interface/LocalUserInterface";
@@ -11,15 +11,18 @@ import useGetCookies from "./Hook/useGetCookies";
 import useEraseCookie from "./Hook/useEraseCookie";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import NeedAuth from "./Component/NeedAuth";
+import {LoginReducer} from "./Reducers/LoginReducer";
+import {Login, Logout } from './Actions/LoginActions';
 
 export default function App() {
     const [loggedUser, setLoggedUser] = useState<LoginResponseInterface>({
-        status: 'error',
+        status: "error",
         token: "",
         username: ""
     })
     const [localUser, setLocalUser] = useState<LocalUserInterface>({password: "", username: ""})
     const [blogList, setBlogList] = useState<BlogInterface[]>([])
+
     // Determines if the user wants to LogIn or to Register
     const [needsLogin, setNeedsLogin] = useState<boolean>(true)
     const [needsUpdate, setNeedsUpdate] = useState<boolean>(false)
@@ -62,7 +65,12 @@ export default function App() {
         eraseCookie();
     }
 
-    // @ts-ignore
+    const [loginReducer, dispatchLogin] = useReducer(LoginReducer, loggedUser)
+
+    // const handleClick = () => {
+    //     dispatchLogin(Logout)
+    // }
+
     return (
         <BrowserRouter>
 
@@ -72,12 +80,11 @@ export default function App() {
                 </HideIfLogged>
 
                 <HideIfNotLogged loggedUser={loggedUser}>
-                    <button className='btn btn-danger d-block mx-auto mb-3' onClick={handleDisconnect}>Disconnect
+                    <button className='btn btn-danger d-block mx-auto mb-3' onClick={() => dispatchLogin(Logout)}>Disconnect
                     </button>
                 </HideIfNotLogged>
-
-
             </div>
+
         </BrowserRouter>
     )
 }
