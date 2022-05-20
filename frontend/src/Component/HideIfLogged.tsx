@@ -6,7 +6,7 @@ interface HideIfLoggedPropsInterface {
 }
 
 export default function HideIfLogged({loggedUser, children}: HideIfLoggedPropsInterface) {
-    if (loggedUser.token) {
+    if (loggedUser.username) {
         return <></>
     }
     return children

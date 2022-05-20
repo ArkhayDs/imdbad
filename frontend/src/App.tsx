@@ -12,7 +12,7 @@ import useEraseCookie from "./Hook/useEraseCookie";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import NeedAuth from "./Component/NeedAuth";
 import {LoginReducer} from "./Reducers/LoginReducer";
-import {Login, Logout } from './Actions/LoginActions';
+import {Login, Logout, Register} from './Actions/LoginActions';
 
 export default function App() {
     const [loggedUser, setLoggedUser] = useState<LoginResponseInterface>({
@@ -21,7 +21,6 @@ export default function App() {
         username: ""
     })
     const [localUser, setLocalUser] = useState<LocalUserInterface>({password: "", username: ""})
-    const [blogList, setBlogList] = useState<BlogInterface[]>([])
 
     // Determines if the user wants to LogIn or to Register
     const [needsLogin, setNeedsLogin] = useState<boolean>(true)
@@ -31,17 +30,6 @@ export default function App() {
     const register = useRegister();
     const cookies = useGetCookies();
     const eraseCookie = useEraseCookie();
-
-    useEffect(() => {
-        if (Object.keys(cookies).includes('hetic_token') && Object.keys(cookies).includes('hetic_username')) {
-            console.log('got cookies !', loggedUser)
-            setLoggedUser(prev => ({
-                ...prev,
-                username: cookies.hetic_username,
-                token: cookies.hetic_token
-            }))
-        }
-    }, [])
 
     useEffect(() => {
         if (needsLogin && localUser.username !== '') {
@@ -55,21 +43,27 @@ export default function App() {
         }
     }, [localUser])
 
-
-    const handleDisconnect = () => {
-        setLoggedUser({
-            status: 'error',
-            token: "",
-            username: ""
-        });
-        eraseCookie();
-    }
+    useEffect(() => {
+        if (Object.keys(cookies).includes('hetic_token') && Object.keys(cookies).includes('hetic_username')) {
+            console.log('got cookies !', loggedUser)
+            setLoggedUser(prev => ({
+                ...prev,
+                username: cookies.hetic_username,
+                token: cookies.hetic_token
+            }))
+        }
+    }, [])
 
     const [loginReducer, dispatchLogin] = useReducer(LoginReducer, loggedUser)
+    const [registerReducer, dispatchRegister] = useReducer(LoginReducer, localUser)
 
-    // const handleClick = () => {
-    //     dispatchLogin(Logout)
-    // }
+    const handleClick = () => {
+        console.log("todo :",localUser)
+        //console.log(dispatchRegister({type:"REGISTER",payload:localUser}));
+
+        //setLoggedUser(dispatchLogin({type:"LOGOUT"}));
+        console.log(dispatchLogin(Logout));
+    }
 
     return (
         <BrowserRouter>
@@ -80,7 +74,7 @@ export default function App() {
                 </HideIfLogged>
 
                 <HideIfNotLogged loggedUser={loggedUser}>
-                    <button className='btn btn-danger d-block mx-auto mb-3' onClick={() => dispatchLogin(Logout)}>Disconnect
+                    <button className='btn btn-danger d-block mx-auto mb-3' onClick={handleClick}>Disconnect
                     </button>
                 </HideIfNotLogged>
             </div>

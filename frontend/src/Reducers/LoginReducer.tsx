@@ -1,10 +1,13 @@
 import useEraseCookie from "../Hook/useEraseCookie";
 import {LoginResponseInterface} from "../Interface/ResponsesInterfaces";
+import {ActionsInterfaces} from "../Interface/ActionsInterfaces";
+import {LocalUserInterface} from "../Interface/LocalUserInterface";
+import useRegister from "../Hook/useRegister";
 
-export function LoginReducer(state: LoginResponseInterface, action: object) : LoginResponseInterface {
+export function LoginReducer(state: LoginResponseInterface & LocalUserInterface, action: ActionsInterfaces) : any {
     const eraseCookie = useEraseCookie();
+    const register = useRegister();
 
-    // @ts-ignore
     switch (action.type) {
         case 'LOGOUT':
             eraseCookie();
@@ -14,8 +17,17 @@ export function LoginReducer(state: LoginResponseInterface, action: object) : Lo
                 username: ""
             };
 
+        case 'REGISTER':
+            console.log("registerReducer :",action.payload)
+            return {
+                username: "coucou",
+                password: "state.password"
+            };
+
         default:
             console.log("Et c'est raté");
             return state;
     }
+
+    return state;
 }
