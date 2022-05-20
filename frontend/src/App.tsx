@@ -32,6 +32,7 @@ export default function App() {
     const register = useRegister();
 
     useEffect(() => {
+        console.log(localUser);
         if (needsLogin && localUser.username !== '') {
             console.log('login ?')
             login(localUser.username, localUser.password)
@@ -41,7 +42,7 @@ export default function App() {
             register(localUser.username, localUser.password)
                 .then(data => dispatch(Login(data)))
         }
-    }, [dispatch])
+    }, [localUser])
 
     useEffect(() => {
         if (Object.keys(cookies).includes('hetic_token') && Object.keys(cookies).includes('hetic_username')) {

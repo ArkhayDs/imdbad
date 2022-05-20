@@ -32,7 +32,7 @@ export function LoginReducer(state: { loggedUser: LoginResponseInterface; localU
 
         case 'LOGOUT':
             eraseCookie();
-            return state = {
+            return {
                 loggedUser: {
                     status: "error",
                     token: "",
@@ -47,40 +47,6 @@ export function LoginReducer(state: { loggedUser: LoginResponseInterface; localU
         case 'REGISTER':
             console.log("registerReducer :",action.payload)
             return state;
-
-        // case 'LOGIN':
-        //     state.loggedUser = {
-        //         status: "success",
-        //         // @ts-ignore
-        //         token: action.payload.token ? action.payload.token : "",
-        //         // @ts-ignore
-        //         username: action.payload.username ? action.payload.username : "",
-        //     }
-        //     state.localUser = {
-        //         // @ts-ignore
-        //         password: action.payload.password ? action.payload.password : "",
-        //         // @ts-ignore
-        //         username: action.payload.username ? action.payload.username : "",
-        //     }
-        //     return state;
-        //
-        // case 'LOGOUT':
-        //     eraseCookie();
-        //     return {
-        //         status: "error",
-        //         token: "",
-        //         username: ""
-        //     };
-        //
-        // case 'REGISTER':
-        //     console.log("registerReducer :",action.payload)
-        //     return {
-        //         username: "coucou",
-        //         password: "state.password"
-        //     };
-        //
-        // default:
-        //     return state;
     }
 
     return state;

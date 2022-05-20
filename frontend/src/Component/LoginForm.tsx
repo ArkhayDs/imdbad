@@ -10,7 +10,6 @@ interface LoginFormPropsInterface {
 
 export default function LoginForm({needsLogin, setNeedsLogin}: LoginFormPropsInterface) {
     const dispatch = useDispatch();
-    const select = useSelector(state=>state);
 
     const [formInput, setFormInput] = useState<LocalUserInterface>({password: "", username: ""})
 
@@ -24,7 +23,6 @@ export default function LoginForm({needsLogin, setNeedsLogin}: LoginFormPropsInt
     const handleSubmit = (e: any) => {
         e.preventDefault();
         dispatch(Login(formInput));
-        console.log(select)
     }
 
     return (
