@@ -13,67 +13,60 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import NeedAuth from "./Component/NeedAuth";
 import {LoginReducer} from "./Reducers/LoginReducer";
 import {Login, Logout, Register} from './Actions/LoginActions';
+import {store} from "./index";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function App() {
-    const [loggedUser, setLoggedUser] = useState<LoginResponseInterface>({
-        status: "error",
-        token: "",
-        username: ""
-    })
-    const [localUser, setLocalUser] = useState<LocalUserInterface>({password: "", username: ""})
+    const dispatch = useDispatch();
+    // @ts-ignore
+    const loggedUser = useSelector(state=>state.loggedUser);
+    // @ts-ignore
+    const localUser = useSelector(state=>state.localUser);
 
     // Determines if the user wants to LogIn or to Register
     const [needsLogin, setNeedsLogin] = useState<boolean>(true)
     const [needsUpdate, setNeedsUpdate] = useState<boolean>(false)
 
     const login = useLogin();
-    const register = useRegister();
     const cookies = useGetCookies();
-    const eraseCookie = useEraseCookie();
+    const register = useRegister();
 
     useEffect(() => {
         if (needsLogin && localUser.username !== '') {
             console.log('login ?')
             login(localUser.username, localUser.password)
-                .then(data => setLoggedUser(data))
+                .then(data => dispatch(Login(data)))
         } else if (!needsLogin && localUser.username !== '') {
             console.log('register ?', localUser.username)
             register(localUser.username, localUser.password)
-                .then(data => setLoggedUser(data))
+                .then(data => dispatch(Login(data)))
         }
-    }, [localUser])
+    }, [dispatch])
 
     useEffect(() => {
         if (Object.keys(cookies).includes('hetic_token') && Object.keys(cookies).includes('hetic_username')) {
             console.log('got cookies !', loggedUser)
-            setLoggedUser(prev => ({
-                ...prev,
+            dispatch(Login({
+                status: loggedUser.status,
                 username: cookies.hetic_username,
                 token: cookies.hetic_token
             }))
         }
     }, [])
 
-    const [loginReducer, dispatchLogin] = useReducer(LoginReducer, loggedUser)
-    const [registerReducer, dispatchRegister] = useReducer(LoginReducer, localUser)
-
     const handleClick = () => {
-        console.log("todo :",localUser)
-        //console.log(dispatchRegister({type:"REGISTER",payload:localUser}));
-
-        //setLoggedUser(dispatchLogin({type:"LOGOUT"}));
-        console.log(dispatchLogin(Logout));
+        console.log("deconnexion...")
     }
 
     return (
         <BrowserRouter>
 
             <div className='container mt-5'>
-                <HideIfLogged loggedUser={loggedUser}>
-                    <LoginForm setLocalUser={setLocalUser} needsLogin={needsLogin} setNeedsLogin={setNeedsLogin}/>
+                <HideIfLogged>
+                    <LoginForm needsLogin={needsLogin} setNeedsLogin={setNeedsLogin}/>
                 </HideIfLogged>
 
-                <HideIfNotLogged loggedUser={loggedUser}>
+                <HideIfNotLogged>
                     <button className='btn btn-danger d-block mx-auto mb-3' onClick={handleClick}>Disconnect
                     </button>
                 </HideIfNotLogged>

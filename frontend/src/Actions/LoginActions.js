@@ -1,14 +1,17 @@
 import useRegister from "../Hook/useRegister";
+import {LocalUserInterface} from "../Interface/LocalUserInterface";
 
-export const Login = {
-    type: 'LOGIN'
+export function Login (payload) {
+    return {
+        type: 'LOGIN',
+        payload: payload
+    }
 }
 
-export const Register = {
-    type: 'REGISTER',
-    payload: {
-        username: "",
-        password: ""
+export function Register (payload) {
+    return {
+        type: 'REGISTER',
+        payload: payload
     }
 }
 

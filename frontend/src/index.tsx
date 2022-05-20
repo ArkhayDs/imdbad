@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {createStore} from "redux";
+import {configureStore, createStore} from "@reduxjs/toolkit";
 import {Provider} from "react-redux";
 import {LoginReducer} from "./Reducers/LoginReducer";
 
@@ -11,10 +11,33 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+export const storeData = {
+    loggedUser: {
+        status: "error",
+        token: "",
+        username: ""
+    },
+    localUser: {
+        password: "",
+        username: ""
+    }
+}
+
+// @ts-ignore
+export const store = createStore(LoginReducer,storeData);
+// export const store = configureStore({
+//     reducer: {
+//         LoginReducer: LoginReducer
+//     },
+//     // @ts-ignore
+//     preloadedState: storeData
+// })
 
 root.render(
   <React.StrictMode>
-      <App />
+      <Provider store={store}>
+          <App />
+      </Provider>
   </React.StrictMode>
 );
 

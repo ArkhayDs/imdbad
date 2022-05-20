@@ -1,13 +1,17 @@
 import React, {useState} from "react";
 import {LocalUserInterface} from "../Interface/LocalUserInterface";
+import {useDispatch, useSelector} from "react-redux";
+import {Login} from "../Actions/LoginActions";
 
 interface LoginFormPropsInterface {
-    setLocalUser: React.Dispatch<LocalUserInterface>,
     needsLogin: boolean,
     setNeedsLogin: React.Dispatch<boolean>
 }
 
-export default function LoginForm({setLocalUser, needsLogin, setNeedsLogin}: LoginFormPropsInterface) {
+export default function LoginForm({needsLogin, setNeedsLogin}: LoginFormPropsInterface) {
+    const dispatch = useDispatch();
+    const select = useSelector(state=>state);
+
     const [formInput, setFormInput] = useState<LocalUserInterface>({password: "", username: ""})
 
     const handleChange = ({target}: any) => {
@@ -19,7 +23,8 @@ export default function LoginForm({setLocalUser, needsLogin, setNeedsLogin}: Log
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        setLocalUser(formInput);
+        dispatch(Login(formInput));
+        console.log(select)
     }
 
     return (
